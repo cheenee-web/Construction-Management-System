@@ -1,0 +1,280 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: #f8f8f8;
+    color: #111;
+    display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 220px;
+    background: white;
+    border-right: 1px solid #e5e5e5;
+    height: 100vh;
+    padding-top: 40px;
+    position: fixed;
+}
+
+.sidebar h2 {
+    text-align: center;
+    font-weight: 800;
+    letter-spacing: 2px;
+    font-size: 18px;
+    margin-bottom: 40px;
+}
+
+.sidebar a {
+    display: block;
+    padding: 14px 30px;
+    text-decoration: none;
+    color: #555;
+    font-weight: 400;
+    transition: all 0.3s ease;
+}
+
+.sidebar a:hover {
+    color: black;
+    transform: translateX(5px);
+}
+
+/* Main */
+.main {
+    margin-left: 220px;
+    padding: 60px;
+    width: 100%;
+}
+
+h1 {
+    font-size: 48px;
+    font-weight: 800;
+    margin-bottom: 60px;
+    line-height: 1.2;
+}
+
+h2 {
+    font-size: 32px;
+    font-weight: 600;
+    margin-top: 80px;
+    margin-bottom: 20px;
+}
+
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    margin-bottom: 30px;
+}
+
+/* Forms */
+input, select {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: black;
+}
+
+button {
+    padding: 14px 22px;
+    background: black;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight: 600;
+}
+
+button:hover {
+    background: #333;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+th {
+    font-weight: 600;
+    color: #555;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+tr:hover {
+    background: #fafafa;
+}
+
+/* Delete Button */
+.deleteBtn {
+    background: transparent;
+    color: red;
+    border: 1px solid red;
+    padding: 6px 12px;
+    border-radius: 4px;
+}
+
+.deleteBtn:hover {
+    background: red;
+    color: white;
+}
+
+/* Accordion */
+.accordion-item {
+    border-bottom: 1px solid #eee;
+    margin-bottom: 10px;
+}
+
+.accordion-button {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 18px 0;
+    text-align: left;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.accordion-content {
+    display: none;
+    padding-bottom: 20px;
+    color: #666;
+}
+
+/* QR Card */
+.qr-card {
+    background: white;
+    padding: 25px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+/* Footer */
+footer {
+    margin-top: 100px;
+    padding-top: 40px;
+    border-top: 1px solid #eee;
+    text-align: center;
+    font-size: 14px;
+    color: #777;
+}
+
+/* Smooth Scroll */
+html {
+    scroll-behavior: smooth;
+}
+
+/* ============================= */
+/* RESPONSIVE DESIGN */
+/* ============================= */
+
+@media (max-width: 1024px){
+
+.main{
+padding:40px;
+}
+
+h1{
+font-size:38px;
+}
+
+}
+
+/* TABLET */
+
+@media (max-width: 768px){
+
+.sidebar{
+position:relative;
+width:100%;
+height:auto;
+display:flex;
+flex-direction:column;
+align-items:center;
+}
+
+.sidebar h2{
+margin-bottom:10px;
+}
+
+.sidebar a{
+text-align:center;
+width:100%;
+border-left:none;
+}
+
+.main{
+margin-left:0;
+padding:30px 20px;
+}
+
+h1{
+font-size:32px;
+text-align:center;
+}
+
+.dark-toggle{
+top:15px;
+right:15px;
+}
+
+}
+
+/* MOBILE */
+
+@media (max-width: 480px){
+
+h1{
+font-size:26px;
+}
+
+h2{
+font-size:22px;
+}
+
+.card{
+padding:20px;
+}
+
+button{
+width:100%;
+}
+
+table{
+font-size:13px;
+}
+
+th,td{
+padding:10px;
+}
+
+input,select{
+font-size:14px;
+padding:12px;
+}
+
+}
+</style>
