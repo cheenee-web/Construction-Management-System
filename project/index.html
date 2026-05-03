@@ -424,8 +424,8 @@ right:10px;
 <section id="contact">
 <h2>Contact Us</h2>
 <div class="card">
-<p>Email: smartconstruction@email.com</p>
-<p>Phone: +63 900 123 4567</p>
+<p>Email: structuraltitans@gmail.com</p>
+<p>Phone: +63 994 047 217</p>
 </div>
 </section>
 
@@ -438,71 +438,66 @@ right:10px;
 
 
 <script>
-	document.addEventListener("DOMContentLoaded", () => {
+ document.addEventListener("DOMContentLoaded", () => {
+
+  // Accordion
   document.querySelectorAll(".accordion-button").forEach(btn => {
     btn.addEventListener("click", () => {
       const content = btn.nextElementSibling;
-
-      const isOpen = content.style.display === "block";
-      content.style.display = isOpen ? "none" : "block";
+      content.style.display = content.style.display === "block" ? "none" : "block";
     });
   });
-});
 
-const data = {
-clientName: clientName.value,
-projectName: projectName.value,
-materialName: materialName.value,
-supplier: supplier.value,
-delivered: +delivered.value,
-used: +used.value,
-price: +price.value,
-paymentStatus: paymentStatus.value
-};
+  emailjs.init("7PBBSFoh8oEXk1eD7");
 
-let projects = JSON.parse(localStorage.getItem("projects")) || {};
+  const form = document.getElementById("clientForm");
 
-if(!projects[data.projectName])
-projects[data.projectName]=[];
+  const clientEmail = document.getElementById("clientEmail");
+  const clientName = document.getElementById("clientName");
+  const projectName = document.getElementById("projectName");
+  const materialName = document.getElementById("materialName");
+  const supplier = document.getElementById("supplier");
+  const delivered = document.getElementById("delivered");
+  const used = document.getElementById("used");
+  const price = document.getElementById("price");
+  const paymentStatus = document.getElementById("paymentStatus");
 
-projects[data.projectName].push(data);
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
 
-localStorage.setItem("projects", JSON.stringify(projects));
+    const deliveredVal = Number(delivered.value);
+    const usedVal = Number(used.value);
+    const priceVal = Number(price.value);
 
+    const totalCost = usedVal * priceVal;
+    const remaining = deliveredVal - usedVal;
 
-const deliveredVal = +delivered.value;
-const usedVal = +used.value;
-const priceVal = +price.value;
+    const params = {
+      to_email: clientEmail.value,
+      clientName: clientName.value,
+      projectName: projectName.value,
+      materialName: materialName.value,
+      supplier: supplier.value,
+      delivered: deliveredVal,
+      used: usedVal,
+      price: priceVal,
+      paymentStatus: paymentStatus.value,
+      totalCost: totalCost,
+      remaining: remaining
+    };
 
-// calculations
-const totalCost = usedVal * priceVal;
-const remaining = deliveredVal - usedVal;
+    console.log("SENDING:", params); // 🔥 IMPORTANT DEBUG
 
-let params = {
-to_email: document.getElementById("clientEmail").value,
-clientName: clientName.value,
-projectName: projectName.value,
-materialName: materialName.value,
-supplier: supplier.value,
-delivered: deliveredVal,
-used: usedVal,
-price: priceVal,
-paymentStatus: paymentStatus.value,
+    emailjs.send("service_cgpqi0y", "template_kjaqd3k", params)
+      .then(() => {
+        alert("Email sent successfully!");
+        form.reset();
+      })
+      .catch(err => {
+        console.error("Email failed:", err);
+      });
 
-totalCost: totalCost,
-remaining: remaining
-};
-
-emailjs.send("service_cgpqi0y","template_kjaqd3k",params)
-.then(response => {
-  console.log("SUCCESS!", response.status, response.text);
-  alert("Email sent successfully!");
-})
-.catch(error => {
-  console.error("FAILED...", error);
-  alert("Email failed. Check console.");
-});
-clientForm.reset();
+  });
 
 });
 </script>
