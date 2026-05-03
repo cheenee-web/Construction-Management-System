@@ -440,13 +440,20 @@ right:10px;
 <script>
  document.addEventListener("DOMContentLoaded", () => {
 
-  // Accordion
-  document.querySelectorAll(".accordion-button").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const content = btn.nextElementSibling;
-      content.style.display = content.style.display === "block" ? "none" : "block";
+ document.querySelectorAll(".accordion-button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const content = btn.nextElementSibling;
+
+    // close others (optional but cleaner UX)
+    document.querySelectorAll(".accordion-content").forEach(el => {
+      if (el !== content) el.style.display = "none";
     });
+
+    // toggle current
+    content.style.display =
+      content.style.display === "block" ? "none" : "block";
   });
+});
 
   emailjs.init("7PBBSFoh8oEXk1eD7");
 
