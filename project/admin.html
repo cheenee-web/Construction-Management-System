@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard - SCMMS</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+font-family:Poppins,sans-serif;
+margin:0;
+padding:0;
+background:#0f172a;
+color:#f1f5f9;
+display:flex;
+flex-direction:column;
+align-items:center;
+}
+
+.container{
+width:90%;
+max-width:1100px;
+margin-top:40px;
+}
+
+h1{
+text-align:center;
+margin-bottom:20px;
+}
+
+.card{
+background:#1e293b;
+padding:15px;
+border-radius:10px;
+margin-bottom:20px;
+}
+
+input,button{
+padding:10px;
+margin:5px 0;
+width:100%;
+border-radius:6px;
+border:none;
+font-size:14px;
+}
+
+button{
+background:#3b82f6;
+color:white;
+cursor:pointer;
+}
+
+button:hover{
+background:#2563eb;
+}
+
+.hidden{display:none}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+background:#1e293b;
+border-radius:10px;
+overflow:hidden;
+}
+
+th,td{
+padding:10px;
+text-align:left;
+border-bottom:1px solid #334155;
+}
+
+th{
+background:#3b82f6;
+color:white;
+}
+
+.deleteBtn{
+background:red;
+color:white;
+border:none;
+padding:5px 10px;
+border-radius:5px;
+cursor:pointer;
+}
+
+select{
+padding:10px;
+width:100%;
+margin-top:10px;
+border-radius:6px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Admin Dashboard</h1>
+
+<!-- LOGIN -->
+<div id="loginBox" class="card">
+<h3>Admin Login</h3>
+<input type="password" id="adminPassword" placeholder="Enter Password">
+<button onclick="login()">Login</button>
+<p id="error" style="color:red;"></p>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="hidden">
+
+<div class="card">
+<label>Filter by Project</label>
+<select id="projectFilter" onchange="renderDashboard()">
+<option value="all">All Projects</option>
+</select>
+</div>
+
+<!-- 🔥 NEW: CLEAR ALL DATA -->
+<div class="card">
+<button onclick="clearAllData()" style="background:#ef4444;">
+Clear All Data
+</button>
+</div>
+
+<div id="output"></div>
+
+</div>
+
+</div>
+
+<script>
+// =========================
+// LOAD DATA FROM INDEX
+// =========================
+let projects = JSON.parse(localStorage.getItem("projects")) || {};
+
+// =========================
+// LOGIN
+// =========================
+function login(){
+const pass = document.getElementById("adminPassword").value;
+
+if(pass === "admin123"){
+document.getElementById("loginBox").classList.add("hidden");
+document.getElementById("dashboard").classList.remove("hidden");
+loadProjects();
+renderDashboard();
+}else{
+document.getElementById("error").innerText = "Wrong password!";
+}
+}
+
+// =========================
+// LOAD PROJECT FILTER
+// =========================
+function loadProjects(){
+const filter = document.getElementById("projectFilter");
+filter.innerHTML = `<option value="all">All Projects</option>`;
+
+Object.keys(projects).forEach(name=>{
+if(projects[name].length > 0){
+let opt = document.createElement("option");
+opt.value = name;
+opt.textContent = name;
+filter.appendChild(opt);
+}
+});
+}
+
+// =========================
+// DASHBOARD RENDER
+// =========================
+function renderDashboard(){
+
+const filterValue = document.getElementById("projectFilter").value;
+const output = document.getElementById("output");
+
+output.innerHTML = "";
+
+Object.keys(projects).forEach(projectName=>{
+
+if(filterValue !== "all" && filterValue !== projectName) return;
+
+let materials = projects[projectName];
+
+let totalCost = materials.reduce((s,m)=>s+(m.delivered*m.price),0);
+let totalStock = materials.reduce((s,m)=>s+(m.delivered-m.used),0);
+
+let box = document.createElement("div");
+box.className = "card";
+
+box.innerHTML = `
+<h3>${projectName}</h3>
+<p><strong>Total Cost:</strong> ₱${totalCost} | <strong>Total Stock:</strong> ${totalStock}</p>
+`;
+
+let table = document.createElement("table");
+
+table.innerHTML = `
+<tr>
+<th>Material</th>
+<th>Client</th>
+<th>Supplier</th>
+<th>Delivered</th>
+<th>Used</th>
+<th>Remaining</th>
+<th>Usage %</th>
+<th>Payment</th>
+<th>Action</th>
+</tr>
+`;
+
+materials.forEach((m,i)=>{
+
+let remaining = m.delivered - m.used;
+let usage = ((m.used/m.delivered)*100).toFixed(1);
+
+let row = document.createElement("tr");
+
+row.innerHTML = `
+<td>${m.materialName}</td>
+<td>${m.clientName}</td>
+<td>${m.supplier}</td>
+<td>${m.delivered}</td>
+<td>${m.used}</td>
+<td>${remaining}</td>
+<td>${usage}%</td>
+<td>${m.paymentStatus}</td>
+<td><button class="deleteBtn" onclick="deleteItem('${projectName}',${i})">Delete</button></td>
+`;
+
+table.appendChild(row);
+});
+
+box.appendChild(table);
+output.appendChild(box);
+
+});
+}
+
+// =========================
+// DELETE ITEM
+// =========================
+function deleteItem(project, index){
+
+projects[project].splice(index,1);
+
+if(projects[project].length === 0){
+delete projects[project];
+}
+
+localStorage.setItem("projects", JSON.stringify(projects));
+
+loadProjects();
+renderDashboard();
+}
+
+// =========================
+// CLEAR ALL DATA (NEW)
+// =========================
+function clearAllData(){
+if(confirm("Are you sure you want to delete ALL data?")){
+localStorage.removeItem("projects");
+projects = {};
+loadProjects();
+renderDashboard();
+}
+}
+
+</script>
+
+</body>
+</html>
