@@ -424,8 +424,8 @@ right:10px;
 <section id="contact">
 <h2>Contact Us</h2>
 <div class="card">
-<p>Email: structuraltitans@gmail.com</p>
-<p>Phone: +63 994 047 217</p>
+<p>Email: smartconstruction@email.com</p>
+<p>Phone: +63 900 123 4567</p>
 </div>
 </section>
 
@@ -483,6 +483,15 @@ projects[data.projectName].push(data);
 
 localStorage.setItem("projects", JSON.stringify(projects));
 
+
+const deliveredVal = +delivered.value;
+const usedVal = +used.value;
+const priceVal = +price.value;
+
+// calculations
+const totalCost = usedVal * priceVal;
+const remaining = deliveredVal - usedVal;
+
 let params = {
 to_email: document.getElementById("clientEmail").value,
 clientName: clientName.value,
@@ -493,6 +502,10 @@ delivered: delivered.value,
 used: used.value,
 price: price.value,
 paymentStatus: paymentStatus.value
+};
+
+totalCost: totalCost,
+remaining: remaining
 };
 
 emailjs.send("service_cgpqi0y","template_kjaqd3k",params);
