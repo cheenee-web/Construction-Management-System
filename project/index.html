@@ -489,13 +489,6 @@ right:10px;
     console.log("SENDING:", params); // 🔥 IMPORTANT DEBUG
 
     emailjs.send("service_cgpqi0y", "template_kjaqd3k", params)
-      .then(() => {
-        alert("Email sent successfully!");
-        form.reset();
-      })
-      .catch(err => {
-        console.error("Email failed:", err);
-      });
 
   });
 
