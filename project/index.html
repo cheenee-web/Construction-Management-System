@@ -493,6 +493,25 @@ right:10px;
       remaining: remaining
     };
 
+
+    let projects = JSON.parse(localStorage.getItem("projects")) || {};
+
+if (!projects[projectName.value]) {
+  projects[projectName.value] = [];
+}
+
+projects[projectName.value].push({
+  clientName: clientName.value,
+  materialName: materialName.value,
+  supplier: supplier.value,
+  delivered: deliveredVal,
+  used: usedVal,
+  price: priceVal,
+  paymentStatus: paymentStatus.value
+});
+
+localStorage.setItem("projects", JSON.stringify(projects));
+
     console.log("SENDING:", params); // 
 
     emailjs.send("service_cgpqi0y", "template_kjaqd3k", params)
